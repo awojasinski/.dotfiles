@@ -1,0 +1,49 @@
+#!/bin/bash
+set -e
+
+# Paths
+DOTFILES_DIR="$HOME/.dotfiles"
+
+# MacOS Requirements
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    if ! xcode-select -p > /dev/null 2>&1; then
+        echo -e "Installing Command Line Tools (CLT) for Xcode..."
+        xcode-select --install
+        read -p "Press enter to continue"
+    fi
+
+    if ! which brew > /dev/null 2>&1; then
+        echo -e "Installing Homebrew..."
+        bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    fi
+fi
+
+# Python
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    if ! brew list python3 > /dev/null 2>&1; then
+        echo -e "Installing Python3..."
+        brew install python3 > /dev/null 2>&1
+        echo -e "Python3 installed!"
+    fi
+fi
+
+# Ansible
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    if ! brew list ansible > /dev/null 2>&1; then
+        echo -e "Installing Ansible..."
+        brew install ansible > /dev/null 2>&1
+        echo -e "Ansible installed!"
+        echo -e "Installing Ansible argument completion..."
+        brew install python-argcomplete
+        activate-global-python-argcomplete > /dev/null 2>&1
+    fi
+fi
+
+# Clone .dotfiles repository
+if ! [[ -d "$DOTFILES_DIR" ]]; then
+    echo -e "Cloning repository: github.com/awojasinski/.dotfiles"
+    git clone --quiet "https://github.com/awojasinski/.dotfiles.git" "$DOTFILES_DIR" > /dev/null
+else
+    echo -e "Updating repository: github.com/awojasinski/.dotfiles"
+    git -C "$DOTFILES_DIR" pull --quiet > /dev/null
+fi
