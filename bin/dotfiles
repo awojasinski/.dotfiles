@@ -4,29 +4,6 @@ set -e
 # Paths
 DOTFILES_DIR="$HOME/.dotfiles"
 
-# MacOS Requirements
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    if ! xcode-select -p > /dev/null 2>&1; then
-        echo -e "Installing Command Line Tools (CLT) for Xcode..."
-        xcode-select --install
-        read -p "Press enter to continue"
-    fi
-
-    if ! which brew > /dev/null 2>&1; then
-        echo -e "Installing Homebrew..."
-        bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    fi
-fi
-
-# Python
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    if ! brew list python3 > /dev/null 2>&1; then
-        echo -e "Installing Python3..."
-        brew install python3 > /dev/null 2>&1
-        echo -e "Python3 installed!"
-    fi
-fi
-
 # Ansible
 if [[ "$OSTYPE" == "darwin"* ]]; then
     if ! brew list ansible > /dev/null 2>&1; then
