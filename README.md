@@ -1,3 +1,5 @@
+![CI status](https://github.com/awojasinski/.dotfiles/actions/workflows/playbook-lint.yml/badge.svg)
+
 # dotfiles
 Personal config files and all files needed to setup new machine.
 To run setup script paste following command to your terminal
