@@ -24,3 +24,16 @@ else
     echo -e "Updating repository: github.com/awojasinski/.dotfiles"
     git -C "$DOTFILES_DIR" pull --quiet > /dev/null
 fi
+
+pushd "$DOTFILES_DIR" > /dev/null 2>&1
+
+# Run playbook
+if [[ -f $VAULT_SECRET ]]; then
+    echo -e "Using vault config file"
+    ansible-playbook --vault-password-file $VAULT_SECRET "$DOTFILES_DIR/playbook.yml" "$@"
+else
+    echo -e "Vault config file not found, contining without it"
+    ansible-playbook "$DOTFILES_DIR/playbook.yml" "$@"
+fi
+
+popd > /dev/null 2>&1
