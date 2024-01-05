@@ -1,0 +1,9 @@
+---
+- name: Dotfiles config
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Hello
+      ansible.builtin.debug:
+        msg: "Hello World!"
