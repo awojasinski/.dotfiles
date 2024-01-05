@@ -27,7 +27,12 @@ fi
 
 pushd "$DOTFILES_DIR" > /dev/null 2>&1
 
+# Update Ansible Galaxy
+echo -e "Upating Ansible Galaxy..."
+ansible-galaxy install -r requirements.yml > /dev/null 2>&1
+
 # Run playbook
+echo -e "Running playbook..."
 if [[ -f $VAULT_SECRET ]]; then
     echo -e "Using vault config file"
     ansible-playbook --vault-password-file $VAULT_SECRET "$DOTFILES_DIR/playbook.yml" "$@"
