@@ -17,4 +17,4 @@ jobs:
       - name: Install Ansible Galaxy collections
         run: ansible-galaxy install -r requirements.yml
       - name: Check playbook correctness
-        run: ansible-lint playbook.yml
+        run: ansible-lint --exclude=.github/
