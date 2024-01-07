@@ -1,0 +1,16 @@
+---
+git_aliases:
+  - alias: p
+    command: push
+  - alias: pf
+    command: push --force
+  - alias: ll
+    command: log --oneline
+  - alias: ca
+    command: commit --amend --no-edit
+  - alias: cm
+    command: commit -sm
+  - alias: df
+    command: diff --name-only
+  - alias: list
+    command: config --get-regexp ^alias

@@ -1,0 +1,13 @@
+---
+- name: Set init.defaultBranch
+  community.general.git_config:
+    name: init.defaultBranch
+    scope: global
+    value: main
+
+- name: Set aliases
+  community.general.git_config:
+    name: alias.{{ item.alias }}
+    scope: global
+    value: "{{ item.command }}"
+  loop: "{{ git_aliases }}"
