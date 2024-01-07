@@ -4,6 +4,28 @@
   connection: local
 
   tasks:
-    - name: Hello
-      ansible.builtin.debug:
-        msg: "Hello World!"
+    - name: List all dirs in roles
+      ansible.builtin.find:
+        paths: "{{ playbook_dir }}/roles"
+        file_type: directory
+        recurse: false
+      register: found_roles_dirs
+
+    - name: Get roles names
+      ansible.builtin.set_fact:
+        run_roles: "{{ (run_roles | default([])) + [(item.path | basename)] }}"
+      loop:
+        "{{ found_roles_dirs.files | list }}"
+      loop_control:
+        label: "{{ item.path | basename }}"
+
+    - name: Execute roles
+      ansible.builtin.include_role:
+        apply:
+          tags:
+            - "{{ role_name }}"
+        name: "{{ role_name }}"
+      loop:
+        "{{ run_roles }}"
+      loop_control:
+        loop_var: role_name
