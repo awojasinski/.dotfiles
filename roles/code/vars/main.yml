@@ -1,0 +1,6 @@
+---
+code_settings_path:
+  - os: "Darwin"
+    path: "{{ lookup('ansible.builtin.env', 'HOME') }}/Library/Application\ Support/Code/User"
+  - os: "Debian"
+    path: "{{ lookup('ansible.builtin.env', 'HOME') }}/.config/Code/User/"

@@ -1,0 +1,29 @@
+---
+- name: Install Visual Studio Code
+  community.general.homebrew_cask:
+    name: visual-studio-code
+    state: present
+  when: ansible_facts['os_family'] == 'Darwin'
+
+- name: Copy VS Code settings file
+  ansible.builtin.copy:
+    src: settings.json
+    dest: "{{ (code_settings_path |
+               selectattr('os', 'equalto', ansible_facts['os_family']) |
+               first).path }}/settings.json"
+    mode: "0644"
+
+- name: Install extensions
+  ansible.builtin.command:
+    argv:
+      - code
+      - --install-extension
+      - "{{ item }}"
+  register: cmd_output
+  changed_when: cmd_output.rc != 0
+  with_items:
+    - ms-vscode.cpptools
+    - EditorConfig.EditorConfig
+    - streetsidesoftware.code-spell-checker
+    - mhutchie.git-graph
+    - GitHub.github-vscode-theme

@@ -1,0 +1,12 @@
+{
+    // EDITOR
+    "editor.renderWhitespace": "all",
+    "editor.minimap.maxColumn": 100,
+    "editor.minimap.enabled": false,
+    "editor.rulers": [
+        100
+    ],
+
+    // FILES
+    "files.trimTrailingWhitespace": true
+}
