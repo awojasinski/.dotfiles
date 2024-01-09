@@ -6,10 +6,12 @@ git_aliases:
     command: push --force
   - alias: ll
     command: log --oneline
+  - alias: c
+    command: commit
   - alias: ca
     command: commit --amend --no-edit
   - alias: cm
-    command: commit -sm
+    command: commit -m
   - alias: df
     command: diff --name-only
   - alias: list
