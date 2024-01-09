@@ -3,6 +3,12 @@
   ansible.builtin.pip:
     name: west
 
+- name: Copy west configuration
+  ansible.builtin.copy:
+    src: .westconfig
+    dest: "{{ lookup('ansible.builtin.env', 'HOME') }}"
+    mode: "0644"
+
 - name: Install dependencies
   community.general.homebrew:
     name: "{{ item }}"
