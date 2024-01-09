@@ -1,0 +1,16 @@
+---
+zephyr_base_url: "https://github.com/zephyrproject-rtos/sdk-ng"
+
+zephyr_sdk_os_file:
+  - os: "Darwin"
+    arch: arm64
+    filename_sufix: "macos-aarch64.tar.xz"
+  - os: "Darwin"
+    arch: "x86_64"
+    filename_sufix: "macos-x86_64.tar.xz"
+  - os: "Debian"
+    arch: arm64
+    filename_sufix: "linux-aarch64.tar.xz"
+  - os: "Debian"
+    arch: "x86_64"
+    filename_sufix: "linux-x86_64.tar.xz"

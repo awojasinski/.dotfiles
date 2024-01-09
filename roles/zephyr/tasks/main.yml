@@ -1,0 +1,99 @@
+---
+- name: Install west
+  ansible.builtin.pip:
+    name: west
+
+- name: Install dependencies
+  community.general.homebrew:
+    name: "{{ item }}"
+  loop:
+    - cmake
+    - ninja
+    - gperf
+    - python3
+    - ccache
+    - qemu
+    - dtc
+    - libmagic
+    - wget
+  when: ansible_facts['os_family'] == 'Darwin'
+
+- name: Detect SDK
+  ansible.builtin.find:
+    paths:
+      - /opt
+      - /usr/local
+      - "{{ lookup('ansible.builtin.env', 'HOME') }}"
+    file_type: directory
+    patterns: 'zephyr-sdk-^'
+    recurse: false
+    use_regex: true
+  register: zephyr_sdk_installed
+
+- name: Install SDK
+  when: zephyr_sdk_installed.matched == 0
+  block:
+    - name: Check newest SDK version
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/zephyrproject-rtos/sdk-ng/releases/latest
+        return_content: true
+      register: zephyr_latest_release
+      check_mode: false
+
+    - name: Get download url
+      ansible.builtin.set_fact:
+        zephyr_download_url: "{{ zephyr_base_url +
+                                 '/releases/download/' +
+                                 (zephyr_latest_release.content | from_json).tag_name +
+                                 '/zephyr-sdk-' +
+                                 ((zephyr_latest_release.content | from_json).tag_name |
+                                  regex_replace('v', '')) +
+                                 '_' +
+                                 (zephyr_sdk_os_file |
+                                  selectattr('os', 'equalto', ansible_facts['os_family']) |
+                                  selectattr('arch', 'equalto', ansible_architecture) |
+                                  first).filename_sufix }}"
+
+    - name: Download SDK
+      ansible.builtin.get_url:
+        url: "{{ zephyr_download_url }}"
+        dest: "{{ '/tmp/zephyr-sdk-' +
+                  ((zephyr_latest_release.content | from_json).tag_name | regex_replace('v', ''))
+                }}"
+        mode: "0755"
+      register: zephyr_downloaded_info
+
+    - name: Install GNU tar
+      community.general.homebrew:
+        name: gnu-tar
+      when: ansible_facts['os_family'] == 'Darwin'
+
+    - name: Install SDK
+      ansible.builtin.unarchive:
+        src: "{{ zephyr_downloaded_info.dest }}"
+        dest: /opt
+        creates: "{{ '/opt/zephyr-sdk-' +
+                     ((zephyr_latest_release.content | from_json).tag_name |
+                      regex_replace('v', '')) }}"
+      become: true
+      register: zephyr_unarchive
+
+    - name: Run SDK setup script
+      ansible.builtin.command:
+        chdir: "{{ zephyr_unarchive.dest +
+                   '/zephyr-sdk-' +
+                   ((zephyr_latest_release.content | from_json).tag_name | regex_replace('v', ''))
+                }}"
+        cmd: "{{ zephyr_unarchive.dest +
+                   '/zephyr-sdk-' +
+                   ((zephyr_latest_release.content | from_json).tag_name | regex_replace('v', '')) +
+                   '/setup.sh' +
+                   ' -c'
+                }}"
+      register: cmd_output
+      changed_when: cmd_output.rc != 0
+
+    - name: Remove tmp files
+      ansible.builtin.file:
+        path: "{{ zephyr_downloaded_info.dest }}"
+        state: absent
