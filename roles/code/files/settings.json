@@ -8,5 +8,8 @@
     ],
 
     // FILES
-    "files.trimTrailingWhitespace": true
+    "files.trimTrailingWhitespace": true,
+
+    // WORKBENCH
+    "workbench.colorTheme": "GitHub Dark Default"
 }
