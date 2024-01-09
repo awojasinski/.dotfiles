@@ -1,6 +1,17 @@
 ---
-code_settings_path:
+code_settings_path_os:
   - os: "Darwin"
     path: "{{ lookup('ansible.builtin.env', 'HOME') }}/Library/Application\ Support/Code/User"
   - os: "Debian"
     path: "{{ lookup('ansible.builtin.env', 'HOME') }}/.config/Code/User/"
+
+code_settings_path:
+  "{{ (code_settings_path_os |
+       selectattr('os', 'equalto', ansible_facts['os_family']) |
+       first).path }}/settings.json"
+
+code_extensions:
+  - {name: Cpp Tools, id: ms-vscode.cpptools}
+  - {name: EditorConfig Viewer, id: EditorConfig.EditorConfig}
+  - {name: Git graph, id: mhutchie.git-graph}
+  - {name: Github themes, id: GitHub.github-vscode-theme}

@@ -8,10 +8,17 @@
 - name: Copy VS Code settings file
   ansible.builtin.copy:
     src: settings.json
-    dest: "{{ (code_settings_path |
-               selectattr('os', 'equalto', ansible_facts['os_family']) |
-               first).path }}/settings.json"
+    dest: "{{ code_settings_path }}"
     mode: "0644"
+
+- name: List VS Code extensions
+  ansible.builtin.command:
+    argv:
+      - code
+      - --list-extensions
+  register: code_extensions_list
+  changed_when: false
+  no_log: true
 
 - name: Install extensions
   ansible.builtin.command:
@@ -21,8 +28,5 @@
       - "{{ item.id }}"
   register: cmd_output
   changed_when: cmd_output.rc != 0
-  with_items:
-    - {name: Cpp Tools, id: ms-vscode.cpptools}
-    - {name: EditorConfig Viewer, id: EditorConfig.EditorConfig}
-    - {name: Git graph, id: mhutchie.git-graph}
-    - {name: Github themes, id: GitHub.github-vscode-theme}
+  with_items: "{{ code_extensions }}"
+  when: not item.id in code_extensions_list.stdout_lines
