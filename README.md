@@ -31,8 +31,31 @@ in the terminal:
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-## install
+## usage
+
+### install
 
 ```bash
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/awojasinski/.dotfiles/HEAD/bin/dotfiles)"
+```
+
+## update
+
+Run inside the repository:
+
+```bash
+./bin/dotfiles
+```
+
+This handles following operations:
+- updates repository
+- verify that all `ansible-galaxy` collections are updated
+- run playbook from root directory of this repository
+
+The command passes all arguments to the `ansible-playbook` command. This way you can pass arbitrary
+arguments to the `ansible-playbook`. For instance if you would like to run only git role execute
+following command:
+
+```bash
+./bin/dotfiles -t git
 ```
