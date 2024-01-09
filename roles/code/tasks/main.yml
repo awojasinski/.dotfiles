@@ -18,12 +18,11 @@
     argv:
       - code
       - --install-extension
-      - "{{ item }}"
+      - "{{ item.id }}"
   register: cmd_output
   changed_when: cmd_output.rc != 0
   with_items:
-    - ms-vscode.cpptools
-    - EditorConfig.EditorConfig
-    - streetsidesoftware.code-spell-checker
-    - mhutchie.git-graph
-    - GitHub.github-vscode-theme
+    - {name: Cpp Tools, id: ms-vscode.cpptools}
+    - {name: EditorConfig Viewer, id: EditorConfig.EditorConfig}
+    - {name: Git graph, id: mhutchie.git-graph}
+    - {name: Github themes, id: GitHub.github-vscode-theme}
