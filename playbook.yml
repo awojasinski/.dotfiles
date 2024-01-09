@@ -10,6 +10,8 @@
         file_type: directory
         recurse: false
       register: found_roles_dirs
+      tags:
+        - always
 
     - name: Get roles names
       ansible.builtin.set_fact:
@@ -18,6 +20,8 @@
         "{{ found_roles_dirs.files | list }}"
       loop_control:
         label: "{{ item.path | basename }}"
+      tags:
+        - always
 
     - name: Execute roles
       ansible.builtin.include_role:
@@ -29,3 +33,5 @@
         "{{ run_roles }}"
       loop_control:
         loop_var: role_name
+      tags:
+        - always
