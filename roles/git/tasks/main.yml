@@ -11,3 +11,8 @@
     scope: global
     value: "{{ item.command }}"
   loop: "{{ git_aliases }}"
+
+- name: Install GPG
+  community.general.homebrew:
+    name: gnupg
+  when: ansible_facts['os_family'] == 'Darwin'
