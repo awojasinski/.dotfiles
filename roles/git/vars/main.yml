@@ -4,8 +4,10 @@ git_aliases:
     command: push
   - alias: pf
     command: push --force
-  - alias: ll
+  - alias: l
     command: log --oneline
+  - alias: ll
+    command: --no-pager log --oneline
   - alias: c
     command: commit
   - alias: ca
@@ -16,3 +18,5 @@ git_aliases:
     command: diff --name-only
   - alias: list
     command: config --get-regexp ^alias
+  - alias: st
+    command: status -s
