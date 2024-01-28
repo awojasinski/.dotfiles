@@ -11,7 +11,17 @@ code_settings_path:
        first).path }}/settings.json"
 
 code_extensions:
+  - {name: Ansible language support, id: redhat.ansible}
+  - {name: ARM assembly, id: dan-c-underwood.arm}
+  - {name: CMake, id: twxs.cmake}
   - {name: Cpp Tools, id: ms-vscode.cpptools}
+  - {name: Docker, id: ms-azuretools.vscode-docker}
+  - {name: Dev containers, id: ms-vscode-remote.remote-containers}
   - {name: EditorConfig Viewer, id: EditorConfig.EditorConfig}
   - {name: Git graph, id: mhutchie.git-graph}
   - {name: Github themes, id: GitHub.github-vscode-theme}
+  - {name: Kconfig, id: nordic-semiconductor.nrf-kconfig}
+  - {name: Makefile Tools, id: ms-vscode.makefile-tools}
+  - {name: Python, id: ms-python.python}
+  - {name: Python language server, id: ms-python.vscode-pylance}
+  - {name: YAML support, id: redhat.vscode-yaml}
