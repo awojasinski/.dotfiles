@@ -1,0 +1,32 @@
+---
+- name: Install zsh
+  community.general.homebrew:
+    name: zsh
+    state: present
+  when: ansible_facts['os_family'] == 'Darwin'
+
+- name: Set zsh as a default shell
+  ansible.builtin.command: chsh -s /bin/zsh
+  when: ansible_facts['user_shell'] != '/bin/zsh'
+  register: cmd_output
+  changed_when: cmd_output.rc != 0
+
+- name: Check if oh-my-zsh is installed
+  ansible.builtin.stat:
+    path: "{{ lookup('ansible.builtin.env', 'HOME') + '/oh-my-zsh' }}"
+  register: oh_my_zsh_dir
+
+- name: Install oh-my-zsh
+  when: oh_my_zsh_dir.stat.exists
+  block:
+    - name: Download oh-my-zsh installation script
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+        dest: /tmp/install_oh_my_zsh.sh
+        mode: "0755"
+
+    - name: Run oh-my-zsh installation script
+      ansible.builtin.command: sh /tmp/install_oh_my_zsh.sh --unattended
+      register: oh_my_zsh_result
+      failed_when: "'Faild' in oh_my_zsh_result.stderr"
+      changed_when: oh_my_zsh_result.rc != 0
