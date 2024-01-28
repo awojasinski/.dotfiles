@@ -31,7 +31,7 @@
       - /usr/local
       - "{{ lookup('ansible.builtin.env', 'HOME') }}"
     file_type: directory
-    patterns: 'zephyr-sdk-^'
+    patterns: 'zephyr-sdk-'
     recurse: false
     use_regex: true
   register: zephyr_sdk_installed
