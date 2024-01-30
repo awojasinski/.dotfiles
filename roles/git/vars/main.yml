@@ -6,6 +6,8 @@ git_aliases:
     command: push --force
   - alias: ll
     command: log --oneline
+  - alias: b
+    command: branch --verbose
   - alias: c
     command: commit
   - alias: ca
