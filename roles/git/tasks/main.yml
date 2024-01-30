@@ -12,6 +12,12 @@
     value: "{{ item.command }}"
   loop: "{{ git_aliases }}"
 
+- name: Improve pager setting
+  community.general.git_config:
+    name: core.pager
+    scope: global
+    value: "less -FX"
+
 - name: Install GPG
   community.general.homebrew:
     name: gnupg
