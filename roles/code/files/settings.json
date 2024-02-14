@@ -11,5 +11,9 @@
     "files.trimTrailingWhitespace": true,
 
     // WORKBENCH
-    "workbench.colorTheme": "GitHub Dark Default"
+    "workbench.colorTheme": "GitHub Dark Default",
+    "workbench.editor.closeOnFileDelete": true,
+
+    // SEARCH
+    "search.useGlobalIgnoreFiles": true
 }
