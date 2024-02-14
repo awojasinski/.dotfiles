@@ -5,11 +5,14 @@
     state: present
   when: ansible_facts['os_family'] == 'Darwin'
 
-- name: Copy VS Code settings file
+- name: Copy VS Code config files
   ansible.builtin.copy:
-    src: settings.json
-    dest: "{{ code_settings_path }}"
+    src: "{{ item }}"
+    dest: "{{ code_config_path }}"
     mode: "0644"
+  with_items:
+    - settings.json
+    - keybindings.json
 
 - name: List VS Code extensions
   ansible.builtin.command:
